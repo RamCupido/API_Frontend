@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rick & Morty Search</title>
+</head>
+
+<body>
+    <h3>API 1.<br>Rick & Morty search bar</h3>
+    <form id="api1">
+        <label for="character">Name of character:</label>
+        <input type="text" id="character" required>
+        <button type="submit" id="search_character">Search</button>
+    </form>
+    <div id="character_result"></div>
+
+    <script>
+        
+        const ipBackend = "http://127.0.0.1";
+
+        document.getElementById("api1").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const name = document.getElementById("character").value.trim();
+            const info_data = document.getElementById("character_result");
+            info_data.innerHTML = "Buscando personaje...";
+
+            try {
+                const url = `${ipBackend}:666/rickmorty/search/${name}`;
+                const response = await fetch(url);
+                const json_data = await response.json();
+
+                if (!json_data.error) {
+                    info_data.innerHTML = `
+                        <h4>${json_data.name}</h4>
+                        <span>Gender: ${json_data.gender}</span><br>
+                        <span>Origin: ${json_data.origin.name}</span><br>
+                        <img src="${json_data.image}" alt="${json_data.name}" width="200">
+                    `;
+                } else {
+                    info_data.innerHTML = `<span>${json_data.error}</span>`;
+                }
+            } catch (error) {
+                info_data.innerHTML = `<span>Error: ${error.message}</span>`;
+            }
+        });
+    </script>
+</body>
+
+</html>
