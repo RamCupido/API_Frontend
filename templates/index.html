@@ -18,17 +18,16 @@
 
     <script>
         
-        const ipBackend = "http://127.0.0.1";
+        const backend = "http://127.0.0.1:5000";
 
         document.getElementById("api1").addEventListener("submit", async (event) => {
             event.preventDefault();
             const name = document.getElementById("character").value.trim();
             const info_data = document.getElementById("character_result");
-            info_data.innerHTML = "Buscando personaje...";
+            info_data.innerHTML = "Buscando el personaje...";
 
             try {
-                const url = `${ipBackend}:666/rickmorty/search/${name}`;
-                const response = await fetch(url);
+                const response = await fetch(`${backend}/rickmorty/search/${name}`);
                 const json_data = await response.json();
 
                 if (!json_data.error) {
@@ -39,7 +38,7 @@
                         <img src="${json_data.image}" alt="${json_data.name}" width="200">
                     `;
                 } else {
-                    info_data.innerHTML = `<span>${json_data.error}</span>`;
+                    info_data.innerHTML = `<span>Personaje no encontrado</span>`;
                 }
             } catch (error) {
                 info_data.innerHTML = `<span>Error: ${error.message}</span>`;
