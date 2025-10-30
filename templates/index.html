@@ -16,19 +16,35 @@
         <p>Cargando personajes...</p>
     </div>
 
+    <div id="character_result"></div>
+
     <div id="search-container">
         <h3><br>Search bar</h3>
         <form id="api">
             <label for="character">Name of character:</label>
             <input type="text" id="character" required>
             <button type="submit" id="search_character">Search</button>
+            <button type="button" id="show_all_characters" style="display:none;">Show All</button>
         </form>
-        <div id="character_result"></div>
     </div>
 
     <script>
 
         const backend = "http://127.0.0.1:5000";
+
+        const allCharactersList = document.getElementById("all_characters_list");
+        const characterResult = document.getElementById("character_result");
+        const searchForm = document.getElementById("api");
+        const showAllButton = document.getElementById("show_all_characters")
+
+        function showAllCharacters() {
+            allCharactersList.style.display = 'flex';
+            characterResult.innerHTML = '';
+            showAllButton.style.display = 'none';
+            document.getElementById("character").value = '';
+        }
+
+        showAllButton.addEventListener("click", showAllCharacters);
 
         //Load all characters
         document.addEventListener("DOMContentLoaded", async () => {
@@ -66,6 +82,9 @@
             event.preventDefault();
             const name = document.getElementById("character").value.trim();
             const info_data = document.getElementById("character_result");
+            
+            allCharactersList.style.display = 'none'; 
+            showAllButton.style.display = 'inline-block';
             info_data.innerHTML = "Buscando el personaje...";
 
             try {
